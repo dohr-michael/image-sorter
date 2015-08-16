@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-file="http://www.springframework.org/schema/integration/file"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/file http://www.springframework.org/schema/integration/file/spring-integration-file.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="directoryScanner" class="org.springframework.integration.file.RecursiveLeafOnlyDirectoryScanner"/>
+
+    <int-file:inbound-channel-adapter id="input"
+                                      directory="${input.folder}"
+                                      channel="input-channel"
+                                      scanner="directoryScanner"
+                                      filename-pattern="*.*">
+        <int:poller fixed-rate="10"/>
+    </int-file:inbound-channel-adapter>
+
+    <int:channel id="input-channel"/>
+
+    <int:service-activator input-channel="input-channel" ref="fileEndpoint" output-channel="output-channel"/>
+
+    <int:channel id="output-channel"/>
+
+    <int-file:outbound-channel-adapter channel="output-channel"
+                                       directory-expression="'${output.folder}/' + headers.get('year') + '/' + headers.get('month') + '/'"
+                                       filename-generator-expression="headers.get('name')"
+                                       auto-create-directory="true"
+                                       mode="IGNORE"
+                                       delete-source-files="false">
+    </int-file:outbound-channel-adapter>
+
+    <!--<int-file:outbound-channel-adapter channel="output" directory="target/output"/>-->
+
+</beans>

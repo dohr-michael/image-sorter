@@ -1,0 +1,36 @@
+buildscript {
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+
+sourceCompatibility = 1.6
+version = '1.0'
+
+// Versions.
+def drewnoakesVersion = "2.8.1"
+def guavaVersion = "18.0"
+def jodaTime = "2.8.2"
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-integration")
+    compile("com.drewnoakes:metadata-extractor:$drewnoakesVersion")
+    compile("com.google.guava:guava:$guavaVersion")
+    compile("joda-time:joda-time:$jodaTime")
+    testCompile("junit:junit")
+}
