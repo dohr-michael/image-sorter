@@ -39,7 +39,6 @@ public class FileModelItemProcessor implements ItemProcessor<File, FileModel> {
                     }
                 }
             } catch (ImageProcessingException e) {
-                return null;
             } catch (IOException e) {
                 return null;
             }
