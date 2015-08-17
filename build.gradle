@@ -28,6 +28,7 @@ repositories {
 }
 
 dependencies {
+    compile("org.springframework.boot:spring-boot-starter-batch")
     compile("org.springframework.boot:spring-boot-starter-integration")
     compile("com.drewnoakes:metadata-extractor:$drewnoakesVersion")
     compile("com.google.guava:guava:$guavaVersion")
